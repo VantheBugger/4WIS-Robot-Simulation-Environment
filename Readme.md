@@ -30,11 +30,11 @@ sudo apt install ros-noetic-four-wheel-steering-msgs
 
 * 4WIS_Robot: the main package for loading the simulation environment, including the robot model and sensors
 
-![1](document/1.png)
+<p align="center"><img src="document/1.png" width="75%"></p>
 
 * BARN: navigation environment dataset. Due to changes in the robot platform, the original paths and evaluation metrics are no longer applicable
 
-![2](document/2.png)
+<p align="center"><img src="document/2.png" width="100%"></p>
 
 * [four_wheel_steering_controller](https://github.com/ros-controls/ros_controllers/tree/noetic-devel/four_wheel_steering_controller): an existing 4WIS motion controller that does not support multi-modal motion
 * 4WIS_Controller: a custom motion controller for the 4WIS robot (to be completed)
@@ -113,11 +113,11 @@ sudo apt install ros-noetic-four-wheel-steering-msgs
 
 * 4WIS_Robot: 加载环境的总功能包，包括机器人模型、传感器
 
-![1](document/1.png)
+<p align="center"><img src="document/1.png" width="75%"></p>
 
 * BARN：导航环境数据集;由于机器人平台变化，原本的路径与指标不再适用
 
-![2](document/2.png)
+<p align="center"><img src="document/2.png" width="100%"></p>
 
 * [four_wheel_steering_controller](https://github.com/ros-controls/ros_controllers/tree/noetic-devel/four_wheel_steering_controller)：现有的4WIS运动控制器，不支持多模态特性
 * 4WIS_Controller: 4WIS机器人运动控制器（待处理）
