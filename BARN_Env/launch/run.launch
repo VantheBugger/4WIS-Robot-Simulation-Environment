@@ -1,0 +1,53 @@
+<launch>
+
+  <param name="use_sim_time" value="true"/>
+
+  <!-- 地图编号 -->
+  <arg name="map_id" default="1"/>
+
+  <!-- 启动 Gazebo 仿真环境（世界 + 物理引擎 + GUI）-->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="paused"     value="false"/>   <arg name="use_sim_time" value="true"/>
+    <arg name="gui"        value="true"/>    <arg name="headless"   value="false"/>
+    <arg name="debug"      value="false"/>   
+    <arg name="world_name" value="$(find BARN_Env)/source/world_files/world_$(arg map_id).world"/>
+  </include>
+
+
+  <include file="$(find 4WIS_Robot)/launch/wo_world.launch"></include>
+
+
+  <!-- 显示地图对应难度指标和预规划路径，由于机器人平台不同，BARN的原数据已经不具有参考价值 -->
+  <node pkg="BARN_Env" type="map_info.py" name="npy_reader" output="screen">
+    <param name="metrics_npy" value="$(find BARN_Env)/source/metrics_files/metrics_$(arg map_id).npy"/>
+    <param name="path_npy" value="$(find BARN_Env)/source/path_files/path_$(arg map_id).npy"/>
+  </node>
+
+  <!-- map_server节点 -->
+  <node pkg="map_server" type="map_server" name="map_server" output="screen" args="$(find BARN_Env)/source/map_files/yaml_$(arg map_id).yaml"/>
+  <!-- map坐标变换对齐节点 -->
+  <node pkg="BARN_Env" type="map_tf.py" name="world_to_map_static_tf" output="screen">
+    <param name="map_offset_y" value="0.15"/>
+  </node>
+
+  <!-- ========== 手柄驱动节点 ========== -->
+  <node pkg="joy" type="joy_node" name="joy_node" output="screen">
+      <!-- 手柄设备 -->
+      <param name="dev" value="/dev/input/js0"/>
+      <!-- 发布频率 -->
+      <param name="autorepeat_rate" value="30.0"/>
+      <!-- 死区（可选） -->
+      <param name="deadzone" value="0.05"/>
+  </node>
+
+  <!-- ========== joy -> cmd_vel 节点 ========== -->
+  <node pkg="BARN_Env" type="joy_controller.py" name="joy_to_cmdvel" output="screen">
+      <remap from="joy" to="/joy"/>
+      <remap from="cmd_vel" to="robot_0/four_wheel_steering_controller/cmd_vel"/>
+      <param name="max_linear"  value="1.0"/>
+      <param name="max_angular" value="1.5"/>
+      <param name="deadzone"    value="0.05"/>
+  </node>
+
+</launch>
+

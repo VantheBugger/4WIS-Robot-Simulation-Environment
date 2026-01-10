@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Gazebo RGB camera sensor macro (keeps your original parameters).
+    Usage:
+      <xacro:camera_sensor_gazebo reference="gazebo_camera_link"
+                                  camera_name="/camera"
+                                  image_topic="image_raw"
+                                  info_topic="camera_info"
+                                  frame="camera_link"/>
+  -->
+
+  <xacro:macro name="camera_sensor_gazebo" params="
+      reference
+      camera_name:=/camera
+      image_topic:=image_raw
+      info_topic:=camera_info
+      frame:=camera_link
+    ">
+
+    <!-- RGB Camera 60°: 1.0472 (note: your current horizontal_fov is 1.396) -->
+    <gazebo reference="${reference}">
+      <sensor type="camera" name="camera_node">
+        <update_rate>30.0</update_rate>
+
+        <camera name="head">
+          <horizontal_fov>1.0472</horizontal_fov>
+          <image>
+            <width>1280</width>
+            <height>960</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>100</far>
+          </clip>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.007</stddev>
+          </noise>
+        </camera>
+
+        <plugin name="kinect_camera_controller" filename="libgazebo_ros_camera.so">
+          <alwaysOn>true</alwaysOn>
+          <updateRate>0.0</updateRate>
+          <cameraName>${camera_name}</cameraName>
+          <imageTopicName>${image_topic}</imageTopicName>
+          <cameraInfoTopicName>${info_topic}</cameraInfoTopicName>
+          <frameName>${frame}</frameName>
+          <hackBaseline>0.07</hackBaseline>
+          <distortionK1>0.0</distortionK1>
+          <distortionK2>0.0</distortionK2>
+          <distortionK3>0.0</distortionK3>
+          <distortionT1>0.0</distortionT1>
+          <distortionT2>0.0</distortionT2>
+        </plugin>
+      </sensor>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

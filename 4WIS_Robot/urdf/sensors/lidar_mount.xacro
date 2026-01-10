@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Lidar dummy mount (visual + collision + inertial + gazebo material)
+    Usage:
+      <xacro:lidar_mount parent="base_link"
+                         prefix="lidar"
+                         xyz="0.66 0 0.635"
+                         rpy="0 0 0"/>
+  -->
+
+  <xacro:macro name="lidar_mount" params="
+      parent
+      prefix
+      xyz
+      rpy
+      body_radius:=0.06
+      body_length:=0.06
+      cap_radius:=0.06
+      cap_length:=0.01
+      cap_offset:=0.035
+      body_mass:=5.0
+      cap_mass:=5.0
+    ">
+
+    <!-- ====== Joint: parent -> body ====== -->
+    <joint name="${prefix}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <!-- ====== Link: body ====== -->
+    <link name="${prefix}_link">
+      <collision name="${prefix}_link_collision">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="${body_length}" radius="${body_radius}"/>
+        </geometry>
+      </collision>
+
+      <visual name="${prefix}_link_visual">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="${body_length}" radius="${body_radius}"/>
+        </geometry>
+        <material name="${prefix}_blue">
+          <color rgba="0 0 1 1.0"/>
+        </material>
+      </visual>
+
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${body_mass}"/>
+        <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+      </inertial>
+    </link>
+
+    <gazebo reference="${prefix}_link">
+      <material>Gazebo/Blue</material>
+    </gazebo>
+
+    <!-- ====== Joint: body -> cap ====== -->
+    <joint name="${prefix}_cap_joint" type="fixed">
+      <parent link="${prefix}_link"/>
+      <child link="${prefix}_cap"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- ====== Link: cap (top + bottom rings) ====== -->
+    <link name="${prefix}_cap">
+
+      <!-- top ring -->
+      <collision name="${prefix}_cap_top_collision">
+        <origin xyz="0 0 ${cap_offset}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="${cap_length}" radius="${cap_radius}"/>
+        </geometry>
+      </collision>
+
+      <visual name="${prefix}_cap_top_visual">
+        <origin xyz="0 0 ${cap_offset}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="${cap_length}" radius="${cap_radius}"/>
+        </geometry>
+        <material name="${prefix}_grey">
+          <color rgba="0.7 0.7 0.7 1.0"/>
+        </material>
+      </visual>
+
+      <!-- bottom ring -->
+      <collision name="${prefix}_cap_bottom_collision">
+        <origin xyz="0 0 -${cap_offset}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="${cap_length}" radius="${cap_radius}"/>
+        </geometry>
+      </collision>
+
+      <visual name="${prefix}_cap_bottom_visual">
+        <origin xyz="0 0 -${cap_offset}" rpy="0 0 0"/>
+        <geometry>
+          <cylinder length="${cap_length}" radius="${cap_radius}"/>
+        </geometry>
+        <material name="${prefix}_grey">
+          <color rgba="0.7 0.7 0.7 1.0"/>
+        </material>
+      </visual>
+
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${cap_mass}"/>
+        <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+      </inertial>
+    </link>
+
+    <gazebo reference="${prefix}_cap">
+      <material>Gazebo/Grey</material>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

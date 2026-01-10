@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    IMU dummy mount (visual + collision + gazebo material)
+    Usage:
+      <xacro:imu_mount parent="lidar_body"
+                       prefix="imu"
+                       xyz="0 0 0.1"
+                       rpy="0 0 0"
+                       size="0.05 0.05 0.03"/>
+  -->
+
+  <xacro:macro name="imu_mount" params="
+      parent
+      prefix
+      xyz
+      rpy
+      size:='0.05 0.05 0.03'
+      gazebo_material:=Gazebo/Red
+      rgba:='1.0 0.0 0.0 1.0'
+    ">
+
+    <!-- parent -> imu -->
+    <joint name="${prefix}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <link name="${prefix}_link">
+      <visual name="${prefix}_visual">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${size}"/>
+        </geometry>
+        <material name="${prefix}_mat">
+          <color rgba="${rgba}"/>
+        </material>
+      </visual>
+
+      <collision name="${prefix}_collision">
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <box size="${size}"/>
+        </geometry>
+      </collision>
+
+  
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="0.01"/>
+        <inertia ixx="1e-5" ixy="0" ixz="0" iyy="1e-5" iyz="0" izz="1e-5"/>
+      </inertial>
+    </link>
+
+    <gazebo reference="${prefix}_link">
+      <material>${gazebo_material}</material>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>BARN_Env</name>
+  <version>0.0.1</version>
+  <description>
+    Gazebo world and map files for planning benchmark environments
+  </description>
+
+  <maintainer email="3120230765@bit.edu.cn">Runjiao Bao</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>gazebo_ros</exec_depend>
+  <exec_depend>map_server</exec_depend>
+
+</package>

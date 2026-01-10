@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!--
+    Gazebo IMU sensor + gazebo_ros_imu_sensor plugin
+    Usage example:
+      <xacro:imu_sensor_gazebo reference="imu_link"
+                               prefix="imu"
+                               topic="imu"
+                               frame="imu"
+                               update_rate="100"
+                               plugin_update_hz="300.0"
+                               noise="0.0"
+                               xyz_offset="0 0 0"
+                               rpy_offset="0 0 0"/>
+  -->
+
+  <xacro:macro name="imu_sensor_gazebo" params="
+      reference
+      prefix
+      topic:=imu
+      frame:=imu
+      visualize:=true
+      always_on:=true
+      update_rate:=100
+      plugin_update_hz:=300.0
+      noise:=0.0
+      xyz_offset:='0 0 0'
+      rpy_offset:='0 0 0'
+      pose:='0 0 0 0 0 0'
+      gravity:=true
+    ">
+
+    <gazebo reference="${reference}">
+      <gravity>${gravity}</gravity>
+
+      <sensor name="${prefix}_imu_sensor" type="imu">
+        <always_on>${always_on}</always_on>
+        <update_rate>${update_rate}</update_rate>
+        <visualize>${visualize}</visualize>
+
+        <!-- 保持你原来的字段 -->
+        <topic>__default_topic__</topic>
+
+        <plugin filename="libgazebo_ros_imu_sensor.so" name="${prefix}_imu_plugin">
+          <topicName>${topic}</topicName>
+          <bodyName>${reference}</bodyName>
+          <updateRateHZ>${plugin_update_hz}</updateRateHZ>
+          <gaussianNoise>${noise}</gaussianNoise>
+          <xyzOffset>${xyz_offset}</xyzOffset>
+          <rpyOffset>${rpy_offset}</rpyOffset>
+          <frameName>${frame}</frameName>
+        </plugin>
+
+        <pose>${pose}</pose>
+      </sensor>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>

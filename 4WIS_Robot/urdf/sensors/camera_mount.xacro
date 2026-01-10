@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <!-- Camera dummy mount (cylinder body) for Gazebo/RViz -->
+  <xacro:macro name="camera_mount" params="
+      parent
+      prefix
+      xyz
+      rpy
+      body_rpy:='0 ${PI/2} 0'
+      length:=0.08
+      radius:=0.015
+      mass:=5
+      ixx:=0.01 ixy:=0.0 ixz:=0.0 iyy:=0.01 iyz:=0 izz:=0.01
+    ">
+
+    <!-- joint: parent -> camera link -->
+    <joint name="${prefix}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${prefix}_link"/>
+      <origin xyz="${xyz}" rpy="${rpy}"/>
+    </joint>
+
+    <link name="${prefix}_link">
+
+      <collision name="${prefix}_collision">
+        <origin xyz="0 0 0" rpy="${body_rpy}"/>
+        <geometry>
+          <cylinder length="${length}" radius="${radius}"/>
+        </geometry>
+      </collision>
+
+      <!-- RViz uses this color -->
+      <visual name="${prefix}_visual">
+        <origin xyz="0 0 0" rpy="${body_rpy}"/>
+        <geometry>
+          <cylinder length="${length}" radius="${radius}"/>
+        </geometry>
+        <material name="${prefix}_mat">
+          <!-- 固定一个深灰，和 Gazebo/DarkGrey 接近 -->
+          <color rgba="0.3 0.3 0.3 1.0"/>
+        </material>
+      </visual>
+
+      <inertial>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <mass value="${mass}"/>
+        <inertia ixx="${ixx}" ixy="${ixy}" ixz="${ixz}"
+                 iyy="${iyy}" iyz="${iyz}" izz="${izz}"/>
+      </inertial>
+
+    </link>
+
+    <!-- Gazebo uses this material -->
+    <gazebo reference="${prefix}_link">
+      <material>Gazebo/DarkGrey</material>
+    </gazebo>
+
+  </xacro:macro>
+
+</robot>
