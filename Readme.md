@@ -7,7 +7,7 @@
 
 ### Core Features
 
-* A robot URDF model faithfully reconstructed based on a real 4WIS physical platform
+* A robot [URDF model](https://github.com/jujuebaigei123/car_4ws_4wd_urdf_models) faithfully reconstructed based on a real 4WIS physical platform
 * Integration of multi-modal sensors, including a 3D LiDAR, RGB camera, IMU, and collision sensors, with
   [pointcloud_to_laserscan](https://github.com/ros-perception/pointcloud_to_laserscan/tree/1.4.1)
   for online conversion from 3D point clouds to 2D laser scan data
@@ -181,7 +181,7 @@ If you find this simulation environment useful for your research, please conside
 
 ### 基本功能
 
-* 基于真实 4WIS 物理平台复刻的机器人 URDF 模型
+* 基于真实 4WIS 物理平台复刻的机器人 [URDF 模型]((https://github.com/jujuebaigei123/car_4ws_4wd_urdf_models))
 * 集成多源传感器系统，包括 3D 激光雷达、RGB 相机、IMU 以及碰撞传感器，并融合
 [pointcloud_to_laserscan](https://github.com/ros-perception/pointcloud_to_laserscan/tree/1.4.1) 实现 3D 点云到 2D 激光扫描数据的在线转换
 * 集成 [BARN数据集](https://www.cs.utexas.edu/~xiao/BARN/BARN.html) 数据集中的地图文件，用于构建标准化导航测试环境
