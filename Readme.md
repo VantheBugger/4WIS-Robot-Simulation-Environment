@@ -245,7 +245,7 @@ roslaunch 4WIS_Robot run_new.launch
 
 # 3. 直接启动集成 BARN 数据集的环境（无需先启动 1）
 #    支持手柄控制：左摇杆前进，右摇杆转向，RB/R1切换模态
-runlaunch BARN_Env run.launch
+roslaunch BARN_Env run.launch
 ```
 
 ---
