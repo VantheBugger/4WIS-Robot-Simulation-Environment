@@ -75,7 +75,7 @@ roslaunch 4WIS_Robot run_new.launch
 # 3. Directly launch the environment integrated with the BARN dataset (no need to run step 1)
 #    Gamepad control supported: left joystick for forward motion, right joystick for steering,
 #    RB/R1 for mode switching
-runlaunch BARN_Env run.launch
+roslaunch BARN_Env run.launch
 ```
 
 ---
